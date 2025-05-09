@@ -60,7 +60,21 @@ function calculateGPAX() {
   }
 
   const gpax = totalCredits > 0 ? (totalPoints / totalCredits).toFixed(2) : "0.00";
-  document.getElementById('gpax-result').innerText = `GPAX คือ: ${gpax}`;
+  document.getElementById('gpax-result').innerHTML = `GPAX คือ: <strong>${gpax}</strong>`;
+
+  const selectedBranch = document.getElementById("subject-branch").value;
+  const buttonContainer = document.createElement("div");
+  buttonContainer.className = "mt-3";
+
+  if (selectedBranch && gpaxData[selectedBranch]) {
+    buttonContainer.innerHTML = `
+      <button class="btn btn-info" onclick="showComparison('${selectedBranch}', ${gpax})">
+        ดูการเปรียบเทียบกับเกณฑ์ของมหาวิทยาลัย
+      </button>
+      <div class="mt-3" id="comparison-result"></div>
+    `;
+    document.getElementById('gpax-result').appendChild(buttonContainer);
+  }
 }
 
 function clearForm(type) {
@@ -74,20 +88,14 @@ function clearForm(type) {
 
   form.innerHTML = `
     <div class="row mb-3 g-2">
-      <div class="col-12 col-md-4">
-        <input type="text" class="form-control" placeholder="${label1}" />
-      </div>
-      <div class="col-6 col-md-4">
-        <input type="number" class="form-control grade" placeholder="${label2}" step="0.01" />
-      </div>
-      <div class="col-6 col-md-4">
-        <input type="number" class="form-control credit" placeholder="หน่วยกิต" step="0.5" />
-      </div>
+      <div class="col-12 col-md-4"><input type="text" class="form-control" placeholder="${label1}" /></div>
+      <div class="col-6 col-md-4"><input type="number" class="form-control grade" placeholder="${label2}" step="0.01" /></div>
+      <div class="col-6 col-md-4"><input type="number" class="form-control credit" placeholder="หน่วยกิต" step="0.5" /></div>
     </div>
   `;
+  document.getElementById(type + '-result').innerText = '';
 }
 
-// Show required GPAX for selected branch
 const gpaxData = {
   "Computer Science": {
     average: 2.8,
@@ -186,4 +194,23 @@ function toggleUniversityDetails() {
   } else {
     detailBox.style.display = "none";
   }
+}
+
+function showComparison(branch, userGpax) {
+  const detail = gpaxData[branch];
+  let html = `<p>GPAX ของคุณ: <strong>${userGpax}</strong><br/>GPAX เฉลี่ยที่ต้องการสำหรับ <strong>${branch}</strong>: <strong>${detail.average}</strong></p>`;
+  html += "<ul class='list-group'>";
+  for (const uni in detail.universities) {
+    const required = detail.universities[uni];
+    const match = parseFloat(userGpax) >= required;
+    const status = match ? "ผ่าน" : "ไม่ผ่าน";
+    const badgeClass = match ? "bg-success" : "bg-danger";
+    html += `
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        ${uni}
+        <span class="badge ${badgeClass} rounded-pill">${required} (${status})</span>
+      </li>`;
+  }
+  html += "</ul>";
+  document.getElementById("comparison-result").innerHTML = html;
 }
