@@ -247,7 +247,27 @@ function submitFeedback() {
     alert("กรุณาให้คะแนนและเขียนความคิดเห็นก่อนส่ง");
     return;
   }
+  totalComments++;
+  totalStars += selectedStar;
 
+  const avg = (totalStars / totalComments).toFixed(2);
+  document.getElementById("total-comments").innerText = `จำนวนความคิดเห็นทั้งหมด: ${totalComments}`;
+  document.getElementById("average-rating").innerText = `คะแนนเฉลี่ย: ${avg}`;
+
+  // Create and append new comment
+  const list = document.getElementById("comment-list");
+  const li = document.createElement("li");
+  li.className = "list-group-item";
+  li.innerHTML = `<strong>⭐ ${selectedStar}:</strong> ${comment}`;
+  list.appendChild(li);
+
+  // Reset
+  document.getElementById("comment-box").value = "";
+  selectedStar = 0;
+  resetStars();
+
+  alert("ขอบคุณสำหรับความคิดเห็นและการให้คะแนน!");
+}
   const feedback = {
     comment,
     rating: selectedStar
@@ -264,7 +284,6 @@ function submitFeedback() {
   resetStars();
   alert("ขอบคุณสำหรับความคิดเห็นและการให้คะแนน!");
   renderFeedback(); // update UI
-}
 
 function renderFeedback() {
   const feedbackList = JSON.parse(localStorage.getItem("feedbackList") || "[]");
