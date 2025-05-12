@@ -248,15 +248,43 @@ function submitFeedback() {
     return;
   }
 
-  totalComments++;
-  totalStars += selectedStar;
+  const feedback = {
+    comment,
+    rating: selectedStar
+  };
 
-  const avg = (totalStars / totalComments).toFixed(2);
-  document.getElementById("total-comments").innerText = `จำนวนความคิดเห็นทั้งหมด: ${totalComments}`;
-  document.getElementById("average-rating").innerText = `คะแนนเฉลี่ย: ${avg}`;
+  // Save to localStorage
+  const feedbackList = JSON.parse(localStorage.getItem("feedbackList") || "[]");
+  feedbackList.push(feedback);
+  localStorage.setItem("feedbackList", JSON.stringify(feedbackList));
 
+  // Clear input and refresh UI
   document.getElementById("comment-box").value = "";
   selectedStar = 0;
   resetStars();
   alert("ขอบคุณสำหรับความคิดเห็นและการให้คะแนน!");
+  renderFeedback(); // update UI
 }
+
+function renderFeedback() {
+  const feedbackList = JSON.parse(localStorage.getItem("feedbackList") || "[]");
+
+  const commentList = document.getElementById("comment-list");
+  commentList.innerHTML = "";
+
+  let total = 0;
+  feedbackList.forEach(item => {
+    total += item.rating;
+    const li = document.createElement("li");
+    li.className = "list-group-item";
+    li.innerHTML = `<strong>⭐ ${item.rating}:</strong> ${item.comment}`;
+    commentList.appendChild(li);
+  });
+
+  const count = feedbackList.length;
+  const avg = count ? (total / count).toFixed(2) : "-";
+
+  document.getElementById("total-comments").innerText = `จำนวนความคิดเห็นทั้งหมด: ${count}`;
+  document.getElementById("average-rating").innerText = `คะแนนเฉลี่ย: ${avg}`;
+}
+window.addEventListener("DOMContentLoaded", renderFeedback);
