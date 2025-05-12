@@ -8,3 +8,15 @@
 #star-rating .star:hover {
   transform: scale(1.2);
 }
+#share-buttons {
+  margin-top: 10px;
+}
+
+#share-buttons .btn {
+  margin-right: 10px;
+  font-size: 16px;
+}
+
+#share-buttons .fab {
+  margin-right: 8px;
+}

@@ -214,3 +214,22 @@ function showComparison(branch, userGpax) {
   html += "</ul>";
   document.getElementById("comparison-result").innerHTML = html;
 }
+// Function to share on Facebook
+function shareOnFacebook() {
+  const url = "https://wackywahoopizzaa.github.io/GPA-GPAX-calculator/";
+  const fbShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+  window.open(fbShareUrl, '_blank');
+}
+
+// Function to copy the link to the clipboard
+function copyLink() {
+  const url = "https://wackywahoopizzaa.github.io/GPA-GPAX-calculator/";
+  const textarea = document.createElement('textarea');
+  textarea.value = url;
+  document.body.appendChild(textarea);
+  textarea.select();
+  document.execCommand('copy');
+  document.body.removeChild(textarea);
+
+  alert("ลิงก์ได้ถูกคัดลอกไปยังคลิปบอร์ดแล้ว!");
+}
