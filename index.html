@@ -107,31 +107,28 @@
     <hr />
     <h5 class="text-center mb-3">
       หากเพื่อนเห็นว่า "ตัวคำนวณเกรดเฉลี่ย" นี้เป็นประโยชน์<br />
-      กรุณาช่วยกันกดแชร์คนละ 1 ครั้ง เพื่อเป็นกำลังใจให้กับทีมงานด้วยครับ ฝากทักทาย ฝากเม้นด้านล่าง ฝากกด 5 ให้คะแนนความพึงพอใจด้วยครับ
+      กรุณาช่วยกันกดแชร์คนละ 1 ครั้ง เพื่อเป็นกำลังใจให้กับทีมงานด้วยครับ ฝากทักทาย ฝากเม้นด้านล่างด้วยครับ
     </h5>
 
-    <div class="mb-3">
-      <label for="comment-box" class="form-label fw-bold">แสดงความคิดเห็น:</label>
-      <textarea id="comment-box" class="form-control" rows="3" placeholder="พิมพ์ความคิดเห็นที่นี่..."></textarea>
-    </div>
+  <!-- Facebook SDK -->
+  <div id="fb-root"></div>
+  <script async defer crossorigin="anonymous"
+    src="https://connect.facebook.net/th_TH/sdk.js#xfbml=1&version=v19.0"
+    nonce="FbSdkNonce">
+  </script>
 
-    <div class="mb-3">
-      <label class="form-label fw-bold">ให้คะแนนความพึงพอใจ:</label>
-      <div id="star-rating" class="mb-2">
-        <span class="star" data-star="1">&#9734;</span>
-        <span class="star" data-star="2">&#9734;</span>
-        <span class="star" data-star="3">&#9734;</span>
-        <span class="star" data-star="4">&#9734;</span>
-        <span class="star" data-star="5">&#9734;</span>
-      </div>
-      <button class="btn btn-primary" onclick="submitFeedback()">ส่งความคิดเห็น</button>
+  <!-- Facebook Comments Plugin -->
+  <div class="container mt-5">
+    <div class="fb-comments" 
+        data-href="https://wackywahoopizzaa.github.io/GPA-GPAX-calculator/" 
+        data-width="100%" 
+        data-numposts="10">
     </div>
   </div>
 
   <footer class="text-center mt-5 mb-3 text-muted">
     ตัวคำนวณ GPA/GPAX by Pollapat Varith
   </footer>
-
   <script src="script.js"></script>
 
 </body>
