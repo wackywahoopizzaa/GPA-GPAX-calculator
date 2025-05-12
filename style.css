@@ -1,3 +1,15 @@
+body {
+  font-family: 'Kanit', sans-serif;
+  background-color: #f8f9fa;
+}
+
+input {
+  font-family: 'Kanit', sans-serif;
+}
+
+.container {
+  max-width: 800px;
+}
 #star-rating .star {
   font-size: 2rem;
   color: gold;

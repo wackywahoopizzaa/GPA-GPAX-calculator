@@ -247,16 +247,54 @@ function submitFeedback() {
     alert("กรุณาให้คะแนนและเขียนความคิดเห็นก่อนส่ง");
     return;
   }
+  
+  const feedback = {
+    comment,
+    rating: selectedStar
+  };
 
-  const newFeedbackRef = db.ref("feedback").push();
-  newFeedbackRef.set({
-    comment: comment,
-    rating: selectedStar,
-    timestamp: Date.now()
-  });
+  // Save to localStorage
+  const feedbackList = JSON.parse(localStorage.getItem("feedbackList") || "[]");
+  feedbackList.push(feedback);
+  localStorage.setItem("feedbackList", JSON.stringify(feedbackList));
 
+  // Clear input and refresh UI
   document.getElementById("comment-box").value = "";
   selectedStar = 0;
   resetStars();
   alert("ขอบคุณสำหรับความคิดเห็นและการให้คะแนน!");
+  renderFeedback(); // update UI
 }
+
+function renderFeedback() {
+  const feedbackList = JSON.parse(localStorage.getItem("feedbackList") || "[]");
+
+  const commentList = document.getElementById("comment-list");
+  commentList.innerHTML = "";
+
+  let total = 0;
+  feedbackList.forEach(item => {
+    total += item.rating;
+    const li = document.createElement("li");
+    li.className = "list-group-item";
+    li.innerHTML = `<strong>⭐ ${item.rating}:</strong> ${item.comment}`;
+    commentList.appendChild(li);
+  });
+
+  const count = feedbackList.length;
+  const avg = count ? (total / count).toFixed(2) : "-";
+
+  document.getElementById("total-comments").innerText = `จำนวนความคิดเห็นทั้งหมด: ${count}`;
+  document.getElementById("average-rating").innerText = `คะแนนเฉลี่ย: ${avg}`;
+}
+window.addEventListener("DOMContentLoaded", renderFeedback);
+
+const firebaseConfig = {
+  apiKey: "AIza....",
+  authDomain: "your-app.firebaseapp.com",
+  databaseURL: "https://your-app-default-rtdb.firebaseio.com",
+  projectId: "your-app",
+  storageBucket: "your-app.appspot.com",
+  messagingSenderId: "12345678",
+  appId: "1:12345678:web:abcd"
+};
