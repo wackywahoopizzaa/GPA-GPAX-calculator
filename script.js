@@ -214,3 +214,49 @@ function showComparison(branch, userGpax) {
   html += "</ul>";
   document.getElementById("comparison-result").innerHTML = html;
 }
+
+let totalComments = 0;
+let totalStars = 0;
+let selectedStar = 0;
+
+document.querySelectorAll('.star').forEach(star => {
+  star.addEventListener('mouseover', function () {
+    highlightStars(this.dataset.star);
+  });
+  star.addEventListener('mouseout', resetStars);
+  star.addEventListener('click', function () {
+    selectedStar = parseInt(this.dataset.star);
+    highlightStars(selectedStar);
+  });
+});
+
+function highlightStars(starCount) {
+  const stars = document.querySelectorAll('.star');
+  stars.forEach((star, index) => {
+    star.innerHTML = index < starCount ? '&#9733;' : '&#9734;';
+  });
+}
+
+function resetStars() {
+  highlightStars(selectedStar);
+}
+
+function submitFeedback() {
+  const comment = document.getElementById("comment-box").value.trim();
+  if (!comment || selectedStar === 0) {
+    alert("กรุณาให้คะแนนและเขียนความคิดเห็นก่อนส่ง");
+    return;
+  }
+
+  totalComments++;
+  totalStars += selectedStar;
+
+  const avg = (totalStars / totalComments).toFixed(2);
+  document.getElementById("total-comments").innerText = `จำนวนความคิดเห็นทั้งหมด: ${totalComments}`;
+  document.getElementById("average-rating").innerText = `คะแนนเฉลี่ย: ${avg}`;
+
+  document.getElementById("comment-box").value = "";
+  selectedStar = 0;
+  resetStars();
+  alert("ขอบคุณสำหรับความคิดเห็นและการให้คะแนน!");
+}

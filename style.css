@@ -10,3 +10,13 @@ input {
 .container {
   max-width: 800px;
 }
+#star-rating .star {
+  font-size: 2rem;
+  color: gold;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+#star-rating .star:hover {
+  transform: scale(1.2);
+}
