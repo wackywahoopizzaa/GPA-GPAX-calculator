@@ -214,87 +214,22 @@ function showComparison(branch, userGpax) {
   html += "</ul>";
   document.getElementById("comparison-result").innerHTML = html;
 }
-
-let totalComments = 0;
-let totalStars = 0;
-let selectedStar = 0;
-
-document.querySelectorAll('.star').forEach(star => {
-  star.addEventListener('mouseover', function () {
-    highlightStars(this.dataset.star);
-  });
-  star.addEventListener('mouseout', resetStars);
-  star.addEventListener('click', function () {
-    selectedStar = parseInt(this.dataset.star);
-    highlightStars(selectedStar);
-  });
-});
-
-function highlightStars(starCount) {
-  const stars = document.querySelectorAll('.star');
-  stars.forEach((star, index) => {
-    star.innerHTML = index < starCount ? '&#9733;' : '&#9734;';
-  });
+// Function to share on Facebook
+function shareOnFacebook() {
+  const url = "https://wackywahoopizzaa.github.io/GPA-GPAX-calculator/";
+  const fbShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+  window.open(fbShareUrl, '_blank');
 }
 
-function resetStars() {
-  highlightStars(selectedStar);
+// Function to copy the link to the clipboard
+function copyLink() {
+  const url = "https://wackywahoopizzaa.github.io/GPA-GPAX-calculator/";
+  const textarea = document.createElement('textarea');
+  textarea.value = url;
+  document.body.appendChild(textarea);
+  textarea.select();
+  document.execCommand('copy');
+  document.body.removeChild(textarea);
+
+  alert("ลิงก์ได้ถูกคัดลอกไปยังคลิปบอร์ดแล้ว!");
 }
-
-function submitFeedback() {
-  const comment = document.getElementById("comment-box").value.trim();
-  if (!comment || selectedStar === 0) {
-    alert("กรุณาให้คะแนนและเขียนความคิดเห็นก่อนส่ง");
-    return;
-  }
-  
-  const feedback = {
-    comment,
-    rating: selectedStar
-  };
-
-  // Save to localStorage
-  const feedbackList = JSON.parse(localStorage.getItem("feedbackList") || "[]");
-  feedbackList.push(feedback);
-  localStorage.setItem("feedbackList", JSON.stringify(feedbackList));
-
-  // Clear input and refresh UI
-  document.getElementById("comment-box").value = "";
-  selectedStar = 0;
-  resetStars();
-  alert("ขอบคุณสำหรับความคิดเห็นและการให้คะแนน!");
-  renderFeedback(); // update UI
-}
-
-function renderFeedback() {
-  const feedbackList = JSON.parse(localStorage.getItem("feedbackList") || "[]");
-
-  const commentList = document.getElementById("comment-list");
-  commentList.innerHTML = "";
-
-  let total = 0;
-  feedbackList.forEach(item => {
-    total += item.rating;
-    const li = document.createElement("li");
-    li.className = "list-group-item";
-    li.innerHTML = `<strong>⭐ ${item.rating}:</strong> ${item.comment}`;
-    commentList.appendChild(li);
-  });
-
-  const count = feedbackList.length;
-  const avg = count ? (total / count).toFixed(2) : "-";
-
-  document.getElementById("total-comments").innerText = `จำนวนความคิดเห็นทั้งหมด: ${count}`;
-  document.getElementById("average-rating").innerText = `คะแนนเฉลี่ย: ${avg}`;
-}
-window.addEventListener("DOMContentLoaded", renderFeedback);
-
-const firebaseConfig = {
-  apiKey: "AIza....",
-  authDomain: "your-app.firebaseapp.com",
-  databaseURL: "https://your-app-default-rtdb.firebaseio.com",
-  projectId: "your-app",
-  storageBucket: "your-app.appspot.com",
-  messagingSenderId: "12345678",
-  appId: "1:12345678:web:abcd"
-};
