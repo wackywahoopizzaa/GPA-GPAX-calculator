@@ -61,20 +61,44 @@ function calculateGPAX() {
 
   const gpax = totalCredits > 0 ? (totalPoints / totalCredits).toFixed(2) : "0.00";
   document.getElementById('gpax-result').innerHTML = `GPAX คือ: <strong>${gpax}</strong>`;
-
   const selectedBranch = document.getElementById("subject-branch").value;
   const buttonContainer = document.createElement("div");
   buttonContainer.className = "mt-3";
 
-  if (selectedBranch && gpaxData[selectedBranch]) {
-    buttonContainer.innerHTML = `
-      <button class="btn btn-info" onclick="showComparison('${selectedBranch}', ${gpax})">
-        ดูการเปรียบเทียบกับเกณฑ์ของมหาวิทยาลัย
-      </button>
-      <div class="mt-3" id="comparison-result"></div>
-    `;
-    document.getElementById('gpax-result').appendChild(buttonContainer);
+// Recommendation Section
+  const recommendationBox = document.createElement("div");
+  recommendationBox.className = "mt-4";
+  recommendationBox.innerHTML = generateRecommendations(selectedBranch, parseFloat(gpax));
+
+  document.getElementById('gpax-result').appendChild(buttonContainer);
+  document.getElementById('gpax-result').appendChild(recommendationBox);
+
+}
+
+function generateRecommendations(branch, userGpax) {
+  if (!gpaxData[branch]) return "<p>ไม่พบข้อมูลสำหรับสาขาที่เลือก</p>";
+
+  const universities = gpaxData[branch].universities;
+  let html = `<h5>คำแนะนำมหาวิทยาลัยที่คุณมีโอกาสเข้าได้สำหรับสาขา <strong>${branch}</strong>:</h5><ul class='list-group mt-2'>`;
+
+  let hasMatch = false;
+  for (const uni in universities) {
+    const requiredGpax = universities[uni];
+    if (userGpax >= requiredGpax) {
+      hasMatch = true;
+      html += `<li class="list-group-item d-flex justify-content-between align-items-center">
+        ${uni}
+        <span class="badge bg-success rounded-pill">${requiredGpax}</span>
+      </li>`;
+    }
   }
+
+  if (!hasMatch) {
+    html += `<li class="list-group-item text-danger">ขออภัย GPAX ของคุณยังไม่ถึงเกณฑ์ของมหาวิทยาลัยในสาขานี้</li>`;
+  }
+
+  html += "</ul>";
+  return html;
 }
 
 function clearForm(type) {
@@ -97,7 +121,7 @@ function clearForm(type) {
 }
 
 const gpaxData = {
-  "Computer Science": {
+  "วิทยาการคอมพิวเตอร์": {
     average: 2.8,
     universities: {
       "จุฬาลงกรณ์มหาวิทยาลัย": 3.2,
@@ -111,7 +135,7 @@ const gpaxData = {
       "สถาบันเทคโนโลยีพระจอมเกล้าเจ้าคุณทหารลาดกระบัง": 3.0
     }
   },
-  "Engineering": {
+  "วิศวกรรมศาสตร์": {
     average: 3.1,
     universities: {
       "จุฬาลงกรณ์มหาวิทยาลัย": 3.4,
@@ -124,7 +148,7 @@ const gpaxData = {
       "สถาบันเทคโนโลยีพระจอมเกล้าเจ้าคุณทหารลาดกระบัง": 3.2
     }
   },
-  "Medicine": {
+  "แพทยศาสตร์": {
     average: 3.8,
     universities: {
       "จุฬาลงกรณ์มหาวิทยาลัย": 3.9,
@@ -134,7 +158,7 @@ const gpaxData = {
       "มหาวิทยาลัยสงขลานครินทร์": 3.6
     }
   },
-  "Law": {
+  "นิติศาสตร์": {
     average: 3.0,
     universities: {
       "จุฬาลงกรณ์มหาวิทยาลัย": 3.3,
@@ -143,7 +167,7 @@ const gpaxData = {
       "มหาวิทยาลัยขอนแก่น": 2.9
     }
   },
-  "Business": {
+  "บริหารธุรกิจ": {
     average: 2.9,
     universities: {
       "มหาวิทยาลัยธรรมศาสตร์": 3.0,
@@ -155,7 +179,7 @@ const gpaxData = {
       "สถาบันเทคโนโลยีพระจอมเกล้าเจ้าคุณทหารลาดกระบัง": 2.9
     }
   },
-  "Education": {
+  "ครุศาสตร์ / การศึกษา": {
     average: 2.7,
     universities: {
       "มหาวิทยาลัยศรีนครินทรวิโรฒ": 2.8,
@@ -164,7 +188,7 @@ const gpaxData = {
       "มหาวิทยาลัยเชียงใหม่": 2.6
     }
   },
-  "Arts": {
+  "อักษรศาสตร์ / มนุษยศาสตร์": {
     average: 2.8,
     universities: {
       "มหาวิทยาลัยศิลปากร": 2.9,
@@ -174,7 +198,7 @@ const gpaxData = {
       "มหาวิทยาลัยมหิดล": 2.7
     }
   },
-  "Nursing": {
+  "พยาบาลศาสตร์": {
     average: 3.0,
     universities: {
       "มหาวิทยาลัยมหิดล": 3.1,
