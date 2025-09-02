@@ -17,7 +17,7 @@ function addSubject(formId) {
   row.className = 'row mb-3 g-2';
 
   const label1 = isGPA ? 'ชื่อวิชา' : 'เทอม';
-  const label2 = isGPA ? 'เกรด' : 'GPA เทอมนั้น';
+  const label2 = 'GPA เทอมนั้น'; // always use dropdown for grades
 
   row.innerHTML = `
     <div class="col-12 col-md-4">
@@ -39,8 +39,10 @@ function addSubject(formId) {
       <input type="number" class="form-control credit" placeholder="หน่วยกิต" step="0.5" />
     </div>
   `;
+
   form.appendChild(row);
 }
+
 
 function calculateGPA() {
   const grades = document.querySelectorAll('#gpa-form .grade');
