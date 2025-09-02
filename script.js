@@ -145,8 +145,10 @@ function clearForm(type) {
       <div class="col-6 col-md-4"><input type="number" class="form-control credit" placeholder="หน่วยกิต" step="0.5" /></div>
     </div>
   `;
+
   document.getElementById(type + '-result').innerText = '';
 }
+
 
 const gpaxData = {
   "วิทยาการคอมพิวเตอร์": {
