@@ -20,9 +20,24 @@ function addSubject(formId) {
   const label2 = isGPA ? 'เกรด' : 'GPA เทอมนั้น';
 
   row.innerHTML = `
-    <div class="col-12 col-md-4"><input type="text" class="form-control" placeholder="${label1}" /></div>
-    <div class="col-6 col-md-4"><input type="number" class="form-control grade" placeholder="${label2}" step="0.01" /></div>
-    <div class="col-6 col-md-4"><input type="number" class="form-control credit" placeholder="หน่วยกิต" step="0.5" /></div>
+    <div class="col-12 col-md-4">
+      <input type="text" class="form-control" placeholder="${label1}" />
+    </div>
+    <div class="col-6 col-md-4">
+      <select class="form-select grade">
+        <option value="">${label2}</option>
+        <option value="1">1</option>
+        <option value="1.5">1.5</option>
+        <option value="2">2</option>
+        <option value="2.5">2.5</option>
+        <option value="3">3</option>
+        <option value="3.5">3.5</option>
+        <option value="4">4</option>
+      </select>
+    </div>
+    <div class="col-6 col-md-4">
+      <input type="number" class="form-control credit" placeholder="หน่วยกิต" step="0.5" />
+    </div>
   `;
   form.appendChild(row);
 }
@@ -113,7 +128,18 @@ function clearForm(type) {
   form.innerHTML = `
     <div class="row mb-3 g-2">
       <div class="col-12 col-md-4"><input type="text" class="form-control" placeholder="${label1}" /></div>
-      <div class="col-6 col-md-4"><input type="number" class="form-control grade" placeholder="${label2}" step="0.01" /></div>
+      <div class="col-6 col-md-4">
+        <select class="form-select grade">
+          <option value="">${label2}</option>
+          <option value="1">1</option>
+          <option value="1.5">1.5</option>
+          <option value="2">2</option>
+          <option value="2.5">2.5</option>
+          <option value="3">3</option>
+          <option value="3.5">3.5</option>
+          <option value="4">4</option>
+        </select>
+      </div>
       <div class="col-6 col-md-4"><input type="number" class="form-control credit" placeholder="หน่วยกิต" step="0.5" /></div>
     </div>
   `;
@@ -286,4 +312,13 @@ function copyLink() {
   document.body.removeChild(textarea);
 
   alert("ลิงก์ได้ถูกคัดลอกไปยังคลิปบอร์ดแล้ว!");
+}
+function deleteLastRow(formId) {
+  const form = document.getElementById(formId);
+  const rows = form.querySelectorAll('.row');
+  if (rows.length > 1) {
+    form.removeChild(rows[rows.length - 1]);
+  } else {
+    alert("ไม่สามารถลบแถวสุดท้ายได้");
+  }
 }
